@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Task;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,7 +17,7 @@ class TaskRepository extends ServiceEntityRepository
         parent::__construct($registry, Task::class);
     }
 
-    public function findWithPagination(int $page, int $limit, ?string $searchTerm = null): array
+    public function findWithPagination(int $page, int $limit, ?string $searchTerm = null, ?User $user = null): array
   {
     $queryBuilder = $this->createQueryBuilder('task')
       ->orderBy('task.creationDate', 'DESC')
@@ -26,6 +27,10 @@ class TaskRepository extends ServiceEntityRepository
       $queryBuilder
         ->andWhere('(lower(task.name) LIKE lower(:searchTerm) OR lower(task.description) LIKE lower(:searchTerm))')
         ->setParameter('searchTerm', '%' . $searchTerm . '%');
+    }
+    if ($user !== null) {
+      $queryBuilder->andWhere('task.user = :user')
+                   ->setParameter('user', $user);
     }
     return $queryBuilder
       ->getQuery()

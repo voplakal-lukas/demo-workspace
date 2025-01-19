@@ -20,7 +20,8 @@ class SearchListingController extends AbstractController
         $page = $request->query->getInt('page', self::DEFAULT_PAGE);
         $limit = $request->query->getInt('limit', self::DEFAULT_LIMIT);
         $searchTerm = $request->query->get('searchTerm');
-        $tasks = $taskRepository->findWithPagination($page, $limit, $searchTerm);
+        $user = $this->getUser();
+        $tasks = $taskRepository->findWithPagination($page, $limit, $searchTerm, $user);
         $totalTasks = $taskRepository->countWithSearchTerm($searchTerm);
         return $this->render('listing/search.html.twig', [
             'tasks' => $tasks,

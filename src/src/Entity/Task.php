@@ -42,6 +42,10 @@ class Task
     #[ORM\Column(enumType: ListingType::class)]
     private ?ListingType $listing = null;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -139,6 +143,18 @@ class Task
     public function setListing(ListingType $listing): static
     {
         $this->listing = $listing;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

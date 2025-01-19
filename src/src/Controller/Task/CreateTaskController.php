@@ -15,13 +15,16 @@ class CreateTaskController extends AbstractController
     #[Route('/task/create', name: 'app_task_create')]
     public function index(EntityManagerInterface $entityManager, Request $request): Response
     {   
+        $user = $this->getUser();
         $form = $this->createForm(TaskType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            
             /** @var Task $task */
             $task = $form->getData();
             $task->setCreationDate(new \DateTime());
             $task->setUpdatedDate(new \DateTime());
+            $task->setUser($user);
             $entityManager->persist($task);
             $entityManager->flush();
             $referer = $request->headers->get('referer');

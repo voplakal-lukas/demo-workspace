@@ -3,6 +3,7 @@
 namespace App\Controller\Task;
 
 use App\Entity\Task;
+use App\Entity\User;
 use App\Form\TaskType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -19,13 +20,15 @@ class UpdateTaskController extends AbstractController
         #[MapEntity(mapping: ['taskId' => 'id'])]
         Task $task,
         EntityManagerInterface $entityManager, 
-        Request $request, 
+        Request $request
         ): Response
     {
+        $user = $this->getUser();
         $form = $this->createForm(TaskType::class, $task);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $task->setUpdatedDate(new \DateTime());
+            $task->setUser($user);
             $entityManager->flush();
             $referer = $request->headers->get('referer'); 
             return new RedirectResponse($referer);
