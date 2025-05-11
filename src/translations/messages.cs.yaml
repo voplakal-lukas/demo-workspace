@@ -1,0 +1,8 @@
+sidebar:
+    button:
+        home: DOMŮ
+        task: NOVÝ ÚKOL
+        personal: OSOBNÍ
+        work: PRACOVNÍ
+        search: HLEDAT
+        settings: NASTAVENÍ

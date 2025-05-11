@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\LanguageType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -36,6 +37,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private bool $isVerified = false;
+
+    #[ORM\Column(enumType: LanguageType::class)]
+    private ?LanguageType $language = null;
 
     public function getId(): ?int
     {
@@ -120,6 +124,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function getLanguage(): ?LanguageType
+    {
+        return $this->language;
+    }
+
+    public function setLanguage(LanguageType $language): static
+    {
+        $this->language = $language;
 
         return $this;
     }

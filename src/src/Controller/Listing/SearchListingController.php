@@ -2,8 +2,6 @@
 
 namespace App\Controller\Listing;
 
-use App\Enum\ListingType;
-use App\Enum\ScopeType;
 use App\Repository\TaskRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

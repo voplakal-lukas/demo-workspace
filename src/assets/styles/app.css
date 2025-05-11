@@ -2,8 +2,9 @@
     --primary-color: #142630;
     --secondary-color: #e8e8e8;
     --footer-bgcolor: #272727;
-    --sidebar-bgcolor: #5E5E5E;
-    --main-bgcolor: #9C9C9C;
+    --sidebar-bgcolor: #b5b5b5;
+    --main-bgcolor: #e8e8e8;
+    --contrast-grey: #d5d5d5;
     /* --font-heading: Kalam, cursive, sans-serif; */
     --font-heading: "Arial";
     --font-text: Roboto sans-serif;
@@ -23,7 +24,7 @@ body {
     margin: 0;
     max-width: 100%;
     font-family: var(--font-heading);
-    /* word-spacing: -0.15rem; */
+    background-color: var(--secondary-color);
 }
 
 img {
@@ -88,7 +89,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .layout.no-sidebar {
     grid-template-columns: 1fr;
-    grid-template-rows: 70px 1fr 50px;
+    grid-template-rows: 70px 1fr 40px;
     grid-template-areas: 
     "header"
     "main_content"
@@ -96,8 +97,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .layout {
-    grid-template-columns: 4.5rem 1fr;
-    grid-template-rows: 70px 1fr 50px;
+    grid-template-columns: 4.75rem 1fr;
+    grid-template-rows: 70px 1fr 40px;
     grid-template-areas: 
     "header header"
     "sidebar main_content"
@@ -109,14 +110,15 @@ h1, h2, h3, h4, h5, h6 {
     background-color: var(--primary-color);
     position: sticky;
     z-index: 99;
-    /* box-shadow: 0.01rem 0 0.7rem var(--secondary-color); */
-    border-bottom: 1px solid var(--secondary-color);
 }
 .sidebar {
     grid-area: sidebar;
     background-color: var(--sidebar-bgcolor);
     position: sticky;
-    /* border-right: 1px solid var(--secondary-color); */
+    border-radius: 0.5rem;
+    margin-left: 0.25rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
 }
 
 .sidebar:empty {
@@ -134,14 +136,16 @@ h1, h2, h3, h4, h5, h6 {
     grid-area: footer;
     background-color: var(--footer-bgcolor);
     position: sticky;
-    border-top: 1px solid var(--secondary-color);
 }
 
 .useful_links {
     list-style: none;
     display: flex;
     justify-content: space-around;
-    flex-wrap: wrap;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    height: 100%;
 }
 
 .useful_links a {
@@ -158,12 +162,13 @@ h1, h2, h3, h4, h5, h6 {
     justify-content: stretch;
     height: 100%;
     /* align-items: center; */
+    /* box-shadow: inset 0px 0px 5px 2px rgba(0, 0, 0, 0.3); */
 }
 
 .sidebar_icon_link:hover {
     background-color: var(--primary-color);
     color: var(--secondary-color);
-    border: 1px solid var(--primary-color);
+    box-shadow: 3px 3px 5px rgba(255, 255, 255, 0.3);
 }
 
 .empty {
@@ -206,7 +211,6 @@ h1, h2, h3, h4, h5, h6 {
     width: 3.75rem;
     margin: 0.375rem;
     background-color: var(--secondary-color);
-    border: 1px solid var(--primary-color);
     border-radius: 0.375rem;
     display: flex;
     flex-direction: column;
@@ -214,6 +218,7 @@ h1, h2, h3, h4, h5, h6 {
     align-items: center;
     gap: 0.25rem;
     color: var(--primary-color);
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
 }
 
 .sidebar_icon_link span {
@@ -225,36 +230,66 @@ h1, h2, h3, h4, h5, h6 {
     border-collapse: collapse;
 }
 
-.tasks-table tr {
+/* .tasks-table tr {
     width: 100%;
     border-top:1px solid var(--main-bgcolor);
     border-bottom:1px solid var(--main-bgcolor);
-}
+} */
 
-.tasks-table tr:hover {
+/* .tasks-table tr:hover {
     background-color: var(--secondary-color);
     color: var(--primary-color);
     border-top: 1px solid var(--sidebar-bgcolor);
     border-bottom:1px solid var(--sidebar-bgcolor);
-}
+} */
 
 /* .tasks-table td:hover {
     color: var(--primary-color);
 } */
 
-.tasks-table td {
+/* .tasks-table td {
     padding-left: 0.25rem;
     padding-right: 0.25rem;
+} */
+
+.td-flex {
+    flex-basis: 1.25rem;
+    text-align: center;
 }
 
-.td-width {
-    width: 1rem;
+.task-item {
+    background-color: var(--secondary-color);
+    box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.1);
+    border-radius: 0.3rem;
+    padding: 0.4rem 0.25rem;
+    margin-bottom: 0.25rem;
+}
+
+.task-item-flex {
+    gap: 0.25rem;
+    display: flex;
 }
 
 .task-link {
     display: block;
     text-decoration: none;
     color: inherit;
+}
+
+.task-name {
+    flex-basis: calc(100% - (3 * 1.25rem));
+}
+
+.task-name-search {
+    flex-basis: calc(100% - 1.25rem);
+}
+
+.no-tasks td {
+    height: 4.5rem;
+    border-radius: 0.3rem;
+    background-color: var(--contrast-grey);
+    text-align: center;
+    color: var(--sidebar-bgcolor)
 }
 
 .bording-left {
@@ -266,10 +301,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .content {
-    color: var(--secondary-color);
+    color: var(--primary-color);
     background-color: var(--sidebar-bgcolor);
     width: 100%;
     padding: 1rem;
+    border-radius: 0.5rem;
 }
 
 .ql-toolbar {
@@ -576,3 +612,60 @@ textarea.form-control {
       transform: rotateZ(0);
     }
   }
+
+  /* 🚀 Základní styly pro dialog */
+dialog {
+    width: 50%; /* Nastaví šířku modalu */
+    max-width: 600px; /* Maximální šířka */
+    padding: 20px; /* Vnitřní odsazení */
+    border: none; /* Odebrání hranic */
+    border-radius: 10px; /* Zaoblené rohy */
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3); /* Jemný stín */
+    position: fixed;
+    /* top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); Centrovat */
+}
+
+/* 🛠 Přidáme pozadí při otevření modalu */
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5); /* Černé poloprůhledné pozadí */
+}
+
+/* 🔥 Styl pro header s tlačítkem zavření */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+/* ❌ Styl pro tlačítko zavření */
+.close-button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #333;
+}
+
+/* 🎨 Vylepšení tlačítek ve formuláři */
+dialog form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+dialog .btn {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+dialog .btn:hover {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+}

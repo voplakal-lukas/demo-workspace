@@ -27,11 +27,8 @@ class CreateTaskController extends AbstractController
             $task->setUser($user);
             $entityManager->persist($task);
             $entityManager->flush();
-            $referer = $request->headers->get('referer');
-            if ($referer) {
-                return $this->redirect($referer);
-            }
-            return $this->redirectToRoute('app_home');
+            $listingType = $task->getListing()->value;
+            return $this->redirectToRoute('app_listing', ['type' => $listingType]);
         } 
         return $this->render('task/create.html.twig', [
             'form' => $form

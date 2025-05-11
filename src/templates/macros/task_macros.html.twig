@@ -1,31 +1,67 @@
 {% macro taskListingCurrent(tasksCurrent) %}
-<section class="listing current_week content-flex-item">
+<section class="listing current_week">
 <h2>Current week</h2>
-<table class="tasks-table">
-{% for task in tasksCurrent %}
-<tr>
-<td class="td-width task-drag-and-drop">{{ task.id }}</td>
-<td class="task-name bording-left"><a href="{{ path('app_task_update', {'taskId': task.id} )}}" class="task-link">{{ task.name }}</a></td>
-<td class="td-width bording-left"><a href="{{ path('app_task_delete', {'taskId': task.id} )}}" class="task-link"><i class="fas fa-trash-alt"></i></a></td>
-<td class="td-width bording-left"><a href="" class="task-link"><i class="fa-solid fa-circle-check"></i></a></td>
-</tr>
-{% endfor %}
+<table id="tasksCurrent" class="tasks-table" data-scope="current" data-controller="drag-and-drop" data-drag-and-drop-target="scope">
+{% if tasksCurrent is empty %}
+        <tr class="no-tasks" data-placeholder="true">
+            <td colspan="4">No tasks yet</td>
+        </tr>
+    {% else %}
+        {% for task in tasksCurrent %}
+            <tr class="task-item task-item-flex" draggable="true" data-task-id="{{ task.id }}" data-drag-and-drop-target="task">
+                <td class="td-flex task-drag-and-drop">
+                    <i class="fa-solid fa-arrows-up-down-left-right"></i>
+                </td>
+                <td class="task-name">
+                    <a href="{{ path('app_task_update', {'taskId': task.id} )}}" class="task-link">{{ task.name }}</a>
+                </td>
+                <td class="td-flex">
+                    <a href="{{ path('app_task_delete', {'taskId': task.id} )}}" class="task-link">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
+                </td>
+                <td class="td-flex">
+                    <a href="{{ path('app_task_complete', {'taskId': task.id} )}}" class="task-link">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    {% endif %}
 </table>
 </section>
 {% endmacro %}
 
 {% macro taskListingNext(tasksNext) %}
-<section class="listing next_week content-flex-item">
+<section class="listing next_week">
 <h2>Next week</h2>
-<table class="tasks-table">
-{% for task in tasksNext %}
-<tr>
-<td class="td-width task-drag-and-drop">{{ task.id }}</td>
-<td class="task-name bording-left"><a href="{{ path('app_task_update', {'taskId': task.id} )}}" class="task-link">{{ task.name }}</a></td>
-<td class="td-width bording-left"><a href="{{ path('app_task_delete', {'taskId': task.id} )}}" class="task-link"><i class="fas fa-trash-alt"></i></a></td>
-<td class="td-width bording-left"><a href="" class="task-link"><i class="fa-solid fa-circle-check"></i></a></td>
-</tr>
-{% endfor %}
+<table id="tasksNext" class="tasks-table" data-scope="next" data-controller="drag-and-drop" data-drag-and-drop-target="scope">
+{% if tasksNext is empty %}
+        <tr class="no-tasks" data-placeholder="true">
+            <td colspan="4">No tasks yet</td>
+        </tr>
+    {% else %}
+        {% for task in tasksNext %}
+            <tr class="task-item task-item-flex" draggable="true" data-task-id="{{ task.id }}" data-drag-and-drop-target="task">
+                <td class="td-flex task-drag-and-drop">
+                    <i class="fa-solid fa-arrows-up-down-left-right"></i>
+                </td>
+                <td class="task-name">
+                    <a href="{{ path('app_task_update', {'taskId': task.id} )}}" class="task-link">{{ task.name }}</a>
+                </td>
+                <td class="td-flex">
+                    <a href="{{ path('app_task_delete', {'taskId': task.id} )}}" class="task-link">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
+                </td>
+                <td class="td-flex">
+                    <a href="{{ path('app_task_complete', {'taskId': task.id} )}}" class="task-link">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    {% endif %}
 </table>
 </section>
 {% endmacro %}
@@ -35,11 +71,9 @@
 <h2>All results</h2>
 <table class="tasks-table">
 {% for task in tasks %}
-<tr>
-<td class="td-width task-drag-and-drop">{{ task.id }}</td>
-<td class="task-name bording-left"><a href="{{ path('app_task_update', {'taskId': task.id} )}}" class="task-link">{{ task.name }}</a></td>
-<td class="td-width bording-left"><a href="{{ path('app_task_delete', {'taskId': task.id} )}}" class="task-link"><i class="fas fa-trash-alt"></i></a></td>
-<td class="td-width bording-left"><a href="" class="task-link"><i class="fa-solid fa-circle-check"></i></a></td>
+<tr class="task-item task-item-flex">
+<td class="task-name-search"><a href="{{ path('app_task_update', {'taskId': task.id} )}}" class="task-link">{{ task.name }}</a></td>
+<td class="td-flex"><a href="{{ path('app_task_delete', {'taskId': task.id} )}}" class="task-link"><i class="fas fa-trash-alt"></i></a></td>
 </tr>
 {% endfor %}
 </table>

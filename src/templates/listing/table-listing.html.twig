@@ -1,6 +1,10 @@
 {% import 'macros/task_macros.html.twig' as taskMacros %}
 
 <div class="content content-flex">
-{{ taskMacros.taskListingCurrent(tasksCurrent) }}
-{{ taskMacros.taskListingNext(tasksNext) }}
+    <div id="tasksCurrentContainer" data-listing-type="{{ listingType }}" class="content-flex-item">
+        {{ taskMacros.taskListingCurrent(tasksCurrent) }}
+    </div>
+    <div id="tasksNextContainer" data-listing-type="{{ listingType }}" class="content-flex-item">
+        {{ taskMacros.taskListingNext(tasksNext) }}
+    </div>
 </div>

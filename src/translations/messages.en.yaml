@@ -1,0 +1,8 @@
+sidebar:
+    button:
+        home: HOME
+        task: ADD TASK
+        personal: PERSONAL
+        work: WORK
+        search: SEARCH
+        settings: SETTINGS

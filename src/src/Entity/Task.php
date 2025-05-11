@@ -30,12 +30,6 @@ class Task
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $updatedDate = null;
 
-    #[ORM\Column]
-    private ?bool $archived = false;
-
-    #[ORM\Column(type: Types::TEXT, length: 10, nullable: true)]
-    private ?string $periodSelection = 'current';
-
     #[ORM\Column(enumType: ScopeType::class)]
     private ?ScopeType $scope = null;
 
@@ -95,30 +89,6 @@ class Task
     public function setUpdatedDate(\DateTimeInterface $updatedDate): static
     {
         $this->updatedDate = $updatedDate;
-
-        return $this;
-    }
-
-    public function isArchived(): ?bool
-    {
-        return $this->archived;
-    }
-
-    public function setArchived(bool $archived): static
-    {
-        $this->archived = $archived;
-
-        return $this;
-    }
-
-    public function getPeriodSelection(): ?string
-    {
-        return $this->periodSelection;
-    }
-
-    public function setPeriodSelection(string $periodSelection): static
-    {
-        $this->periodSelection = $periodSelection;
 
         return $this;
     }

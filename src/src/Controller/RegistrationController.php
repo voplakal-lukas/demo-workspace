@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Enum\LanguageType;
 use App\Form\RegistrationFormType;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,17 +15,20 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Translation\LocaleSwitcher;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
 {
-    public function __construct(private EmailVerifier $emailVerifier)
+    private LocaleSwitcher $localeSwitcher;
+    public function __construct(private EmailVerifier $emailVerifier, LocaleSwitcher $localeSwitcher)
     {
+        $this->localeSwitcher = $localeSwitcher;
     }
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager, LocaleSwitcher $localeSwitcher): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -33,9 +37,23 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var string $plainPassword */
             $plainPassword = $form->get('plainPassword')->getData();
+            $plainPasswordAgain = $form->get('plainPasswordAgain')->getData();
+
+            if ($plainPassword !== $plainPasswordAgain) {
+                $this->addFlash('error', 'The passwords do not match.');
+                return $this->redirectToRoute('app_register');
+            }
 
             // encode the plain password
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
+            $currentLocale = $this->localeSwitcher->getLocale();
+            $languageEnum = LanguageType::tryFrom($currentLocale);
+
+            if ($languageEnum === null) {
+                throw new \InvalidArgumentException("Nepodporovaný jazyk: $currentLocale");
+            }
+            
+            $user->setLanguage($languageEnum);
 
             $entityManager->persist($user);
             $entityManager->flush();

@@ -3,12 +3,10 @@
 namespace App\Controller\Task;
 
 use App\Entity\Task;
-use App\Entity\User;
 use App\Form\TaskType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -30,9 +28,9 @@ class UpdateTaskController extends AbstractController
             $task->setUpdatedDate(new \DateTime());
             $task->setUser($user);
             $entityManager->flush();
-            $referer = $request->headers->get('referer'); 
-            return new RedirectResponse($referer);
-        }
+        $listingType = $task->getListing()->value;
+        return $this->redirectToRoute('app_listing', ['type' => $listingType]);       
+    }
         
         return $this->render('task/update.html.twig', [
             'form' => $form
